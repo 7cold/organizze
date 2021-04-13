@@ -10,11 +10,11 @@ import 'package:intl/date_symbol_data_local.dart';
 class Controller extends GetxController {
   @override
   onInit() async {
+    print("atualizando");
     initializeDateFormatting();
     await _categorias().whenComplete(() async {
       await _carregarTransacoes();
       await _carregarContas();
-      //print(categories);
     });
 
     super.onInit();

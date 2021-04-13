@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,6 +8,8 @@ import 'package:money2/money2.dart';
 import 'package:organizze/const/fonts.dart';
 import 'package:organizze/controller/controller.dart';
 import 'package:organizze/data/accounts.dart';
+import 'package:organizze/ui/todas_movimentacoes/todas_movimentacoes_ui.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 
 final Controller c = Get.put(Controller());
 
@@ -18,30 +22,73 @@ class Principal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-      flex: 2,
-      child: Container(
-        padding: EdgeInsets.all(10),
-        color: CupertinoColors.systemGroupedBackground,
-        height: Get.height,
+        flex: 2,
         child: Obx(
-          () => GridView(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: context.breakpoint == LayoutBreakpoint.md ? 2 : 1,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio:
-                  context.breakpoint == LayoutBreakpoint.md ? 1.8 : 2.8,
-            ),
-            children: c.contas.take(2).map((e) {
-              Accouts accouts = e;
-              return _Item(
-                accouts: accouts,
-              );
-            }).toList(),
-          ),
-        ),
-      ),
-    );
+          () => c.contas.length == 0
+              ? Container(
+                  color: CupertinoColors.systemGroupedBackground,
+                  width: Get.width,
+                  height: Get.height,
+                  child: CupertinoActivityIndicator())
+              : Container(
+                  color: CupertinoColors.systemGroupedBackground,
+                  child: ResponsiveGridRow(
+                    children: [
+                      ResponsiveGridCol(
+                        child: ResponsiveGridRow(
+                          children: c.contas.take(2).map((e) {
+                            Accouts accouts = e;
+                            return ResponsiveGridCol(
+                                md: context.breakpoint == LayoutBreakpoint.md
+                                    ? 6
+                                    : 12,
+                                child: _Item(
+                                  accouts: accouts,
+                                ));
+                          }).toList(),
+                        ),
+                      ),
+                      ResponsiveGridCol(
+                        md: 12,
+                        child: Container(
+                          width: Get.width,
+                          height: 100,
+                          margin: EdgeInsets.all(20),
+                          padding: EdgeInsets.symmetric(horizontal: 25),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: CupertinoColors.white),
+                          child: Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    "Consultar todas as movimentações",
+                                    style: fbold18,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 15),
+                                  child: CupertinoButton(
+                                      color: CupertinoColors.activeGreen,
+                                      child: Text(
+                                        "Consultar",
+                                        style: TextStyle(fontFamily: fontThin),
+                                      ),
+                                      onPressed: () {
+                                        Get.to(TodasMovimentacoesUi());
+                                      }),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+        ));
   }
 }
 
@@ -53,6 +100,7 @@ class _Item extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: Get.width,
+      height: 200,
       margin: EdgeInsets.all(16),
       padding: EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(

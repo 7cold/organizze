@@ -62,6 +62,18 @@ TextStyle fthin14g = TextStyle(
   fontSize: 14,
 );
 
+TextStyle fthin16r = TextStyle(
+  fontFamily: fontThin,
+  color: CupertinoColors.systemRed,
+  fontSize: 16,
+);
+
+TextStyle fthin16g = TextStyle(
+  fontFamily: fontThin,
+  color: CupertinoColors.activeGreen,
+  fontSize: 16,
+);
+
 TextStyle fthin16 = TextStyle(
   fontFamily: fontThin,
   color: CupertinoColors.secondaryLabel,

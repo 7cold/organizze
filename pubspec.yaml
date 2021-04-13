@@ -31,7 +31,7 @@ dependencies:
   intl: ^0.17.0
   money2: ^2.0.2
   fl_chart: ^0.35.0
-  jiffy: ^4.1.0
+  responsive_grid: ^2.0.0
   window_size:
     git:
       url: git://github.com/google/flutter-desktop-embedding.git

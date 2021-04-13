@@ -18,14 +18,13 @@ class Movimentacoes extends StatelessWidget {
       flex: context.breakpoint == LayoutBreakpoint.lg ? 2 : 1,
       child: Obx(
         () => Container(
-          padding: EdgeInsets.symmetric(vertical: 20),
+          padding: EdgeInsets.only(right: 20, top: 20),
           color: CupertinoColors.systemGroupedBackground,
           child: Column(
             children: [
               Container(
                 width: Get.width,
                 height: 480,
-                margin: EdgeInsets.all(10),
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
@@ -42,15 +41,17 @@ class Movimentacoes extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 60),
-                      child: Column(
-                        children: c.transacoes.take(5).map((data) {
-                          Transactions transactions = data;
-                          return _Item(transactions: transactions);
-                        }).toList(),
-                      ),
-                    ),
+                    c.transacoes.length == 0
+                        ? Center(child: CupertinoActivityIndicator())
+                        : Padding(
+                            padding: EdgeInsets.only(top: 60),
+                            child: Column(
+                              children: c.transacoes.take(5).map((data) {
+                                Transactions transactions = data;
+                                return _Item(transactions: transactions);
+                              }).toList(),
+                            ),
+                          ),
                   ],
                 ),
               )

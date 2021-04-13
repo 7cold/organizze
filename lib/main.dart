@@ -29,6 +29,8 @@ class MyApp extends StatelessWidget {
           const Locale('es', ''), // Spanish, no country code
         ],
         debugShowCheckedModeBanner: false,
+        defaultTransition: Transition.size,
+        transitionDuration: Duration(milliseconds: 150),
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
