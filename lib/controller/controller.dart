@@ -10,24 +10,24 @@ import 'package:intl/date_symbol_data_local.dart';
 class Controller extends GetxController {
   @override
   onInit() async {
-    print("atualizando");
     initializeDateFormatting();
     await _categorias().whenComplete(() async {
       await _carregarTransacoes();
       await _carregarContas();
     });
-
     super.onInit();
   }
 
+  RxString popup = "Tudo".obs;
+  RxBool loading = false.obs;
   RxBool verSaldo = true.obs;
   RxList categories = [].obs;
   RxList transacoes = [].obs;
+  RxList transacoesFiltro = [].obs;
   RxList contas = [].obs;
   RxInt saldoPrincipal = 0.obs;
   RxInt saldoSecundario = 0.obs;
   String dateNowName = DateFormat('yyyy-MM-dd').format(DateTime.now());
-  DateTime dateNow = DateTime.now();
   NumberFormat numberFormat =
       NumberFormat.currency(locale: 'pt_br', name: 'br');
   final real = Currency.create('EUR', 2,
@@ -92,6 +92,25 @@ class Controller extends GetxController {
           saldoSecundario.value += t.amountCents;
         }
       }
+    } else {
+      throw Exception('Falha ao carregar...');
+    }
+  }
+
+  Future carregarTransacoesFiltro(String dataInicio, String dataFim) async {
+    loading.value = true;
+    final response = await http.get(
+      Uri.parse(
+          'https://api.organizze.com.br/rest/v2/transactions?start_date=$dataInicio&end_date=$dataFim'),
+      headers: {'authorization': basicAuth},
+    );
+
+    if (response.statusCode == 200) {
+      transacoesFiltro.clear();
+      Iterable res = json.decode(response.body);
+      List list = res.map((e) => Transactions.fromJson(e)).toList();
+      transacoesFiltro.addAll(list);
+      loading.value = false;
     } else {
       throw Exception('Falha ao carregar...');
     }

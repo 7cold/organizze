@@ -13,82 +13,81 @@ import 'package:responsive_grid/responsive_grid.dart';
 
 final Controller c = Get.put(Controller());
 
-List<Color> gradientColors = [
-  const Color(0xff23b6e6),
-  const Color(0xff02d39a),
-];
-
 class Principal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-        flex: 2,
-        child: Obx(
-          () => c.contas.length == 0
-              ? Container(
-                  color: CupertinoColors.systemGroupedBackground,
-                  width: Get.width,
-                  height: Get.height,
-                  child: CupertinoActivityIndicator())
-              : Container(
-                  color: CupertinoColors.systemGroupedBackground,
-                  child: ResponsiveGridRow(
-                    children: [
-                      ResponsiveGridCol(
-                        child: ResponsiveGridRow(
-                          children: c.contas.take(2).map((e) {
-                            Accouts accouts = e;
-                            return ResponsiveGridCol(
-                                md: context.breakpoint == LayoutBreakpoint.md
-                                    ? 6
-                                    : 12,
-                                child: _Item(
-                                  accouts: accouts,
-                                ));
-                          }).toList(),
-                        ),
+      flex: 2,
+      child: Obx(
+        () => c.contas.length == 0
+            ? Container(
+                color: CupertinoColors.systemGroupedBackground,
+                width: Get.width,
+                height: Get.height,
+                child: CupertinoActivityIndicator())
+            : Container(
+                color: CupertinoColors.systemGroupedBackground,
+                child: ResponsiveGridRow(
+                  children: [
+                    ResponsiveGridCol(
+                      child: ResponsiveGridRow(
+                        children: c.contas.take(2).map((e) {
+                          Accouts accouts = e;
+                          return ResponsiveGridCol(
+                              md: context.breakpoint == LayoutBreakpoint.md
+                                  ? 6
+                                  : 12,
+                              child: _Item(
+                                accouts: accouts,
+                              ));
+                        }).toList(),
                       ),
-                      ResponsiveGridCol(
-                        md: 12,
+                    ),
+                    ResponsiveGridCol(
+                      md: 12,
+                      child: Container(
+                        width: Get.width,
+                        height: 100,
+                        margin: EdgeInsets.all(20),
+                        padding: EdgeInsets.symmetric(horizontal: 25),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: CupertinoColors.white),
                         child: Container(
-                          width: Get.width,
-                          height: 100,
-                          margin: EdgeInsets.all(20),
-                          padding: EdgeInsets.symmetric(horizontal: 25),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: CupertinoColors.white),
-                          child: Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    "Consultar todas as movimentações",
-                                    style: fbold18,
-                                  ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  "Consultar todas as movimentações",
+                                  style: fbold18,
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 15),
-                                  child: CupertinoButton(
-                                      color: CupertinoColors.activeGreen,
-                                      child: Text(
-                                        "Consultar",
-                                        style: TextStyle(fontFamily: fontThin),
-                                      ),
-                                      onPressed: () {
-                                        Get.to(TodasMovimentacoesUi());
-                                      }),
-                                )
-                              ],
-                            ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 15),
+                                child: CupertinoButton(
+                                    color: CupertinoColors.activeGreen,
+                                    child: c.loading.value == true
+                                        ? CupertinoActivityIndicator()
+                                        : Text(
+                                            "Consultar",
+                                            style:
+                                                TextStyle(fontFamily: fontThin),
+                                          ),
+                                    onPressed: () {
+                                      Get.to(() => TodasMovimentacoesUi());
+                                    }),
+                              )
+                            ],
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-        ));
+              ),
+      ),
+    );
   }
 }
 
@@ -204,6 +203,11 @@ class _Item extends StatelessWidget {
     );
   }
 }
+
+// List<Color> gradientColors = [
+//   const Color(0xff23b6e6),
+//   const Color(0xff02d39a),
+// ];
 
 // class _Chart extends StatelessWidget {
 //   @override

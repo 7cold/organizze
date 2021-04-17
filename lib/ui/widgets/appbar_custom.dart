@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:organizze/const/fonts.dart';
+import 'package:organizze/controller/controller.dart';
+
+final Controller c = Get.put(Controller());
 
 appBarCustom(String label) {
   return AppBar(
