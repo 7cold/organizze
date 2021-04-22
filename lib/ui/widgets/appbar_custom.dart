@@ -6,8 +6,25 @@ import 'package:organizze/controller/controller.dart';
 
 final Controller c = Get.put(Controller());
 
-appBarCustom(String label) {
+appBarCustom(String label, Function func) {
   return AppBar(
+    actions: [
+      func == null
+          ? SizedBox()
+          : Padding(
+              padding: EdgeInsets.only(right: 25),
+              child: IconButton(
+                onPressed: () {
+                  func();
+                },
+                icon: Icon(
+                  Icons.print_outlined,
+                  color: CupertinoColors.activeGreen,
+                  size: 28,
+                ),
+              ),
+            ),
+    ],
     toolbarHeight: 90,
     title: Container(
       padding: EdgeInsets.symmetric(horizontal: 100, vertical: 10),
@@ -16,7 +33,7 @@ appBarCustom(String label) {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Text(
-        "Minhas Movimentações",
+        label,
         style: TextStyle(
             fontFamily: fontBold,
             color: CupertinoColors.activeGreen,

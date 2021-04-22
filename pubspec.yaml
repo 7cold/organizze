@@ -32,6 +32,11 @@ dependencies:
   money2: ^2.0.2
   fl_chart: ^0.35.0
   responsive_grid: ^2.0.0
+  date_range_picker: ^1.0.7
+  syncfusion_flutter_pdf: ^19.1.56-beta
+  path_provider: ^2.0.1
+  pdf: ^3.2.0
+  printing: ^5.1.0
   window_size:
     git:
       url: git://github.com/google/flutter-desktop-embedding.git
@@ -82,6 +87,10 @@ flutter:
     - family: Thin
       fonts:
         - asset: assets/fonts/SFUIDisplay-Thin.otf
+    
+    - family: RegularPDF
+      fonts:
+        - asset: assets/fonts/OpenSans-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

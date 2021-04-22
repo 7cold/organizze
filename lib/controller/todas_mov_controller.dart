@@ -12,13 +12,13 @@ class TodasMovController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    c.carregarTransacoesFiltro('2020-01-01', c.dateNowName);
+    c.carregarTransacoesFiltro(c.dateNowName, c.dateNowName);
   }
 
   @override
   void onClose() {
     super.onClose();
     c.transacoesFiltro.clear();
-    c.popup.value = "Tudo";
+    c.popup.value = "Hoje";
   }
 }
