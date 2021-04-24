@@ -11,10 +11,9 @@ import 'package:organizze/data/categories.dart';
 import 'package:organizze/data/transactions.dart';
 import 'package:organizze/ui/widgets/impressao_ui.dart';
 import 'package:organizze/ui/widgets/appbar_custom.dart';
-import 'package:pdf/pdf.dart';
+
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
-import 'package:pdf/widgets.dart' as pw;
 
 class TodasMovimentacoesUi extends StatelessWidget {
   final Controller c = Get.put(Controller());
@@ -22,65 +21,10 @@ class TodasMovimentacoesUi extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pdf = pw.Document();
-
-    pdf.addPage(
-      pw.MultiPage(
-        pageFormat: PdfPageFormat.a4,
-        build: (pw.Context context) => <pw.Widget>[
-          pw.Header(
-              level: 0,
-              title: '',
-              textStyle: pw.TextStyle(fontSize: 18),
-              child: pw.Column(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: <pw.Widget>[
-                    pw.Text('Relatório Movimentações', textScaleFactor: 1.5),
-                    pw.Text(c.popup.toString(),
-                        textScaleFactor: 1,
-                        style: pw.TextStyle(color: PdfColors.grey700)),
-                  ])),
-          pw.Padding(padding: const pw.EdgeInsets.only(bottom: 20)),
-          pw.Table.fromTextArray(
-              headers: ["Data", "Descrição", "Valor", "Status"],
-              context: context,
-              data: c.transacoesFiltro.map((res) {
-                Transactions trans = res;
-                return [
-                  DateFormat('dd/MM/yyyy')
-                      .format(DateFormat('yyyy-MM-dd').parse(trans.date)),
-                  trans.description,
-                  Money.fromInt(trans.amountCents, c.real).toString(),
-                  trans.paid == true ? "Sim" : "Não"
-                ];
-              }).toList()),
-        ],
-        footer: (pw.Context context) {
-          return pw.Container(
-            alignment: pw.Alignment.centerLeft,
-            child: pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
-                  pw.Text(
-                      "Gerado dia: " +
-                          DateFormat('dd/MM/yyyy').format(
-                              DateFormat('yyyy-MM-dd')
-                                  .parse(DateTime.now().toString())),
-                      style:
-                          pw.TextStyle(fontSize: 11, color: PdfColors.grey600)),
-                  pw.Text("Pag. ${context.pageNumber} of ${context.pagesCount}",
-                      style:
-                          pw.TextStyle(fontSize: 11, color: PdfColors.grey600))
-                ]),
-          );
-        },
-      ),
-    ); //
-
     return Scaffold(
       appBar: appBarCustom("Minhas Movimentações", () {
         Get.to(ImpressaoUi(
-          doc: pdf,
+          transFiltro: c.transacoesFiltro,
         ));
       }),
       backgroundColor: CupertinoColors.extraLightBackgroundGray,

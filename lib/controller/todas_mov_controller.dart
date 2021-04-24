@@ -10,7 +10,7 @@ class TodasMovController extends GetxController {
   }
 
   @override
-  void onReady() {
+  onReady() {
     super.onReady();
     c.carregarTransacoesFiltro(c.dateNowName, c.dateNowName);
   }

@@ -11,6 +11,7 @@ class Controller extends GetxController {
   @override
   onInit() async {
     initializeDateFormatting();
+
     await _categorias().whenComplete(() async {
       await _carregarTransacoes();
       await _carregarContas();
