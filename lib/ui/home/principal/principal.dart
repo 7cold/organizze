@@ -8,6 +8,7 @@ import 'package:money2/money2.dart';
 import 'package:organizze/const/fonts.dart';
 import 'package:organizze/controller/controller.dart';
 import 'package:organizze/data/accounts.dart';
+import 'package:organizze/ui/contas_a_pagar/contas_a_pagarUI.dart';
 import 'package:organizze/ui/todas_movimentacoes/todas_movimentacoes_ui.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 
@@ -76,6 +77,46 @@ class Principal extends StatelessWidget {
                                           ),
                                     onPressed: () {
                                       Get.to(() => TodasMovimentacoesUi());
+                                    }),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    ResponsiveGridCol(
+                      md: 12,
+                      child: Container(
+                        width: Get.width,
+                        height: 100,
+                        margin: EdgeInsets.all(20),
+                        padding: EdgeInsets.symmetric(horizontal: 25),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: CupertinoColors.white),
+                        child: Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  "Contas a Pagar",
+                                  style: fbold18,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 15),
+                                child: CupertinoButton(
+                                    color: CupertinoColors.activeGreen,
+                                    child: c.loading.value == true
+                                        ? CupertinoActivityIndicator()
+                                        : Text(
+                                            "Consultar",
+                                            style:
+                                                TextStyle(fontFamily: fontThin),
+                                          ),
+                                    onPressed: () {
+                                      Get.to(() => ContasaPagarUi());
                                     }),
                               )
                             ],

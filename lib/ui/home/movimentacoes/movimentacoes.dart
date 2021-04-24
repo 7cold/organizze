@@ -48,6 +48,7 @@ class Movimentacoes extends StatelessWidget {
                             child: Column(
                               children: c.transacoes.take(5).map((data) {
                                 Transactions transactions = data;
+
                                 return _Item(transactions: transactions);
                               }).toList(),
                             ),
@@ -85,7 +86,12 @@ class _Item extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 10),
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
-          color: CupertinoColors.secondarySystemBackground,
+          color: transactions.date ==
+                      DateFormat('yyyy-MM-dd').format(DateFormat('yyyy-MM-dd')
+                          .parse(DateTime.now().toString())) &&
+                  transactions.paid == false
+              ? CupertinoColors.systemRed.withOpacity(0.25)
+              : CupertinoColors.secondarySystemBackground,
           borderRadius: BorderRadius.circular(10)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -112,17 +118,36 @@ class _Item extends StatelessWidget {
                     categorie,
                     style: fthin14,
                   ),
-                  transactions.amountCents < 0
-                      ? Text(
-                          Money.fromInt(transactions.amountCents, c.real)
-                              .toString(),
-                          style: fthin14r,
-                        )
-                      : Text(
-                          Money.fromInt(transactions.amountCents, c.real)
-                              .toString(),
-                          style: fthin14g,
-                        )
+                  Row(
+                    children: [
+                      Text(
+                        Money.fromInt(transactions.amountCents, c.real)
+                            .toString(),
+                        style:
+                            transactions.amountCents < 0 ? fthin14r : fthin14g,
+                      ),
+                      SizedBox(width: 5),
+                      transactions.date ==
+                                  DateFormat('yyyy-MM-dd').format(
+                                      DateFormat('yyyy-MM-dd')
+                                          .parse(DateTime.now().toString())) &&
+                              transactions.paid == false
+                          ? Tooltip(
+                              decoration: BoxDecoration(
+                                color: CupertinoColors.black.withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              textStyle: fthin14w,
+                              message: "Sua fatura vence hoje.",
+                              child: Icon(
+                                CupertinoIcons.bell,
+                                color: CupertinoColors.systemGrey,
+                                size: 15,
+                              ),
+                            )
+                          : SizedBox()
+                    ],
+                  )
                 ],
               ),
             ],

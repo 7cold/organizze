@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
         defaultTransition: Transition.size,
         transitionDuration: Duration(milliseconds: 150),
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.green,
         ),
         home: HomeUi(),
       ),

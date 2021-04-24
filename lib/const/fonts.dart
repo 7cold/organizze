@@ -6,6 +6,12 @@ const String fontThin = "Thin";
 
 //bold
 
+TextStyle fbold14 = TextStyle(
+  fontFamily: fontBold,
+  color: CupertinoColors.label,
+  fontSize: 14,
+);
+
 TextStyle fbold16 = TextStyle(
   fontFamily: fontBold,
   color: CupertinoColors.label,
@@ -53,6 +59,12 @@ TextStyle fthin14 = TextStyle(
 TextStyle fthin14r = TextStyle(
   fontFamily: fontThin,
   color: CupertinoColors.systemRed,
+  fontSize: 14,
+);
+
+TextStyle fthin14w = TextStyle(
+  fontFamily: fontThin,
+  color: CupertinoColors.systemBackground,
   fontSize: 14,
 );
 

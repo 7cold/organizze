@@ -5,159 +5,96 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:money2/money2.dart';
 import 'package:organizze/const/fonts.dart';
+import 'package:organizze/controller/contas_a_pagar_controller.dart';
 import 'package:organizze/controller/controller.dart';
-import 'package:organizze/controller/todas_mov_controller.dart';
 import 'package:organizze/data/categories.dart';
 import 'package:organizze/data/transactions.dart';
-import 'package:organizze/ui/widgets/impressao_ui.dart';
 import 'package:organizze/ui/widgets/appbar_custom.dart';
-
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
 
-class TodasMovimentacoesUi extends StatelessWidget {
+class ContasaPagarUi extends StatelessWidget {
   final Controller c = Get.put(Controller());
-  final TodasMovController tm = Get.put(TodasMovController());
+  final ContasaPagarController cp = Get.put(ContasaPagarController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarCustom("Minhas Movimentações", () {
-        Get.to(ImpressaoUi(
-          transFiltro: c.transacoesFiltro,
-        ));
-      }),
+      appBar: appBarCustom("Contas a Pagar", null),
       backgroundColor: CupertinoColors.extraLightBackgroundGray,
       body: SafeArea(
         child: Obx(
           () => Stack(
             children: [
               Align(
-                  alignment: Alignment.topCenter,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Período de referência:    ",
-                        style: fbold20,
-                      ),
-                      CupertinoButton(
-                        color: CupertinoColors.activeGreen,
-                        child: c.loading.value == true
-                            ? CupertinoActivityIndicator()
-                            : Text(
-                                c.popup.value,
-                                style: TextStyle(fontFamily: fontThin),
-                              ),
-                        onPressed: () {
-                          showCupertinoModalPopup(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                CupertinoActionSheet(
-                              title: Text('Período'),
-                              actions: [
-                                CupertinoActionSheetAction(
-                                  child: Text('Hoje'),
-                                  onPressed: () {
-                                    c.loading.value = true;
-                                    c.popup.value = "Hoje";
-                                    c.carregarTransacoesFiltro(
-                                        c.dateNowName, c.dateNowName);
-                                    Navigator.pop(context);
-                                  },
+                alignment: Alignment.topCenter,
+                child: Column(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Período de referência:    ",
+                          style: fbold20,
+                        ),
+                        CupertinoButton(
+                          color: CupertinoColors.activeGreen,
+                          child: c.loading.value == true
+                              ? CupertinoActivityIndicator()
+                              : Text(
+                                  "Selecione",
+                                  style: TextStyle(fontFamily: fontThin),
                                 ),
-                                CupertinoActionSheetAction(
-                                  child: Text('Tudo'),
-                                  onPressed: () {
-                                    c.loading.value = true;
-                                    c.popup.value = "Tudo";
-                                    c.carregarTransacoesFiltro(
-                                        '2020-01-01', c.dateNowName);
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                CupertinoActionSheetAction(
-                                  child: Text(c.mesAtual),
-                                  onPressed: () {
-                                    c.loading.value = true;
-                                    c.popup.value = c.mesAtual;
-                                    c.carregarTransacoesFiltro(
-                                        c.anoAtualInt +
-                                            '-' +
-                                            c.mesAtualInt +
-                                            '-01',
-                                        c.anoAtualInt +
-                                            '-' +
-                                            c.mesAtualInt +
-                                            '-' +
-                                            c.ultimoDiaInt);
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                CupertinoActionSheetAction(
-                                  child: Text(c.mesAnterior),
-                                  onPressed: () {
-                                    c.loading.value = true;
-                                    c.popup.value = c.mesAnterior;
-                                    c.carregarTransacoesFiltro(
-                                        c.anoAnteriorInt +
-                                            '-' +
-                                            c.mesAnteriorInt +
-                                            '-01',
-                                        c.anoAnteriorInt +
-                                            '-' +
-                                            c.mesAnteriorInt +
-                                            '-' +
-                                            c.ultimoDiaMesAnteriorInt);
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                CupertinoActionSheetAction(
-                                  child: Text("Outro período"),
-                                  onPressed: () async {
-                                    c.loading.value = true;
-                                    c.popup.value = "Outro período";
+                          onPressed: () async {
+                            c.loading.value = true;
 
-                                    final List<DateTime> picked =
-                                        await DateRangePicker.showDatePicker(
-                                      context: context,
-                                      initialFirstDate: DateTime.now(),
-                                      initialLastDate:
-                                          DateTime.now().add(Duration(days: 7)),
-                                      firstDate: DateTime(2015),
-                                      lastDate:
-                                          DateTime(DateTime.now().year + 2),
-                                    );
-                                    if (picked != null && picked.length == 2) {
-                                      c.outroP1.value = DateFormat('yyyy-MM-dd')
-                                          .format(DateFormat('yyyy-MM-dd')
-                                              .parse(picked
-                                                  .elementAt(0)
-                                                  .toString()));
+                            final List<DateTime> picked =
+                                await DateRangePicker.showDatePicker(
+                              context: context,
+                              initialFirstDate: DateTime.now(),
+                              initialLastDate:
+                                  DateTime.now().add(Duration(days: 7)),
+                              firstDate: DateTime(2015),
+                              lastDate: DateTime(DateTime.now().year + 2),
+                            );
+                            if (picked != null && picked.length == 2) {
+                              cp.outroP1.value = DateFormat('yyyy-MM-dd')
+                                  .format(DateFormat('yyyy-MM-dd')
+                                      .parse(picked.elementAt(0).toString()));
 
-                                      c.outroP2.value = DateFormat('yyyy-MM-dd')
-                                          .format(DateFormat('yyyy-MM-dd')
-                                              .parse(picked
-                                                  .elementAt(1)
-                                                  .toString()));
-                                    }
-                                    c.carregarTransacoesFiltro(
-                                        c.outroP1.value, c.outroP2.value);
-
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ],
+                              cp.outroP2.value = DateFormat('yyyy-MM-dd')
+                                  .format(DateFormat('yyyy-MM-dd')
+                                      .parse(picked.elementAt(1).toString()));
+                            }
+                            cp.carregarContasaPagar(
+                                cp.outroP1.value, cp.outroP2.value);
+                          },
+                        ),
+                      ],
+                    ),
+                    cp.outroP1.toString() == '1990-01-01'
+                        ? SizedBox()
+                        : Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                              "de: " +
+                                  DateFormat('dd/MM/yy').format(
+                                      DateFormat('yyyy-MM-dd')
+                                          .parse(cp.outroP1.toString())) +
+                                  "    até: " +
+                                  DateFormat('dd/MM/yy').format(
+                                      DateFormat('yyyy-MM-dd')
+                                          .parse(cp.outroP2.toString())),
+                              style: fbold14,
                             ),
-                          );
-                        },
-                      ),
-                    ],
-                  )),
+                          )
+                  ],
+                ),
+              ),
               Container(
                 margin:
-                    EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 70),
+                    EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 90),
                 width: context.width,
                 height: Get.height,
                 decoration: BoxDecoration(
@@ -168,23 +105,25 @@ class TodasMovimentacoesUi extends StatelessWidget {
                   child: Column(
                     children: [
                       SizedBox(height: 20),
-                      c.transacoesFiltro.length == 0
+                      cp.contasapagar.length == 0
                           ? Container(
                               width: context.width,
                               height: context.height / 1.5,
                               child: Center(
                                 child: Text(
-                                  "nenhuma transação para esse período 😀",
+                                  "nenhuma conta para pagar para esse período 😀",
                                   style: fthin22,
                                 ),
                               ),
                             )
                           : Column(
-                              children: c.transacoesFiltro.map((data) {
+                              children: cp.contasapagar.map((data) {
                                 Transactions transactions = data;
-                                return item(
-                                  transactions,
-                                );
+                                return transactions.paid == true
+                                    ? SizedBox()
+                                    : item(
+                                        transactions,
+                                      );
                               }).toList(),
                             ),
                     ],
