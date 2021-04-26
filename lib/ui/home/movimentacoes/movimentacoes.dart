@@ -90,7 +90,7 @@ class _Item extends StatelessWidget {
                       DateFormat('yyyy-MM-dd').format(DateFormat('yyyy-MM-dd')
                           .parse(DateTime.now().toString())) &&
                   transactions.paid == false
-              ? CupertinoColors.systemRed.withOpacity(0.25)
+              ? CupertinoColors.systemYellow.withAlpha(40)
               : CupertinoColors.secondarySystemBackground,
           borderRadius: BorderRadius.circular(10)),
       child: Row(
@@ -139,12 +139,17 @@ class _Item extends StatelessWidget {
                               ),
                               textStyle: fthin14w,
                               message: "Sua fatura vence hoje.",
-                              child: Icon(
-                                CupertinoIcons.bell,
-                                color: CupertinoColors.systemGrey,
-                                size: 15,
-                              ),
-                            )
+                              child: Image.asset(
+                                "assets/icons/alert.png",
+                                height: 15,
+                              )
+
+                              // Icon(
+                              //   CupertinoIcons.bell,
+                              //   color: CupertinoColors.darkBackgroundGray,
+                              //   size: 15,
+                              // ),
+                              )
                           : SizedBox()
                     ],
                   )

@@ -12,6 +12,7 @@ class HomeUi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CupertinoColors.systemGroupedBackground,
       body: Flex(
         direction: Axis.horizontal,
         children: [

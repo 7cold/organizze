@@ -76,17 +76,31 @@ class ContasaPagarUi extends StatelessWidget {
                     cp.outroP1.toString() == '1990-01-01'
                         ? SizedBox()
                         : Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text(
-                              "de: " +
-                                  DateFormat('dd/MM/yy').format(
-                                      DateFormat('yyyy-MM-dd')
-                                          .parse(cp.outroP1.toString())) +
-                                  "    até: " +
-                                  DateFormat('dd/MM/yy').format(
-                                      DateFormat('yyyy-MM-dd')
-                                          .parse(cp.outroP2.toString())),
-                              style: fbold14,
+                            padding: EdgeInsets.only(top: 15),
+                            child: Material(
+                              elevation: 2.5,
+                              color: CupertinoColors.white,
+                              shadowColor: CupertinoColors.systemFill,
+                              borderRadius: BorderRadius.circular(8),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 4, horizontal: 15),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: CupertinoColors
+                                        .tertiarySystemBackground),
+                                child: Text(
+                                  "de: " +
+                                      DateFormat('dd/MM/yy').format(
+                                          DateFormat('yyyy-MM-dd')
+                                              .parse(cp.outroP1.toString())) +
+                                      "    até: " +
+                                      DateFormat('dd/MM/yy').format(
+                                          DateFormat('yyyy-MM-dd')
+                                              .parse(cp.outroP2.toString())),
+                                  style: fthin18,
+                                ),
+                              ),
                             ),
                           )
                   ],
@@ -94,7 +108,7 @@ class ContasaPagarUi extends StatelessWidget {
               ),
               Container(
                 margin:
-                    EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 90),
+                    EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 105),
                 width: context.width,
                 height: Get.height,
                 decoration: BoxDecoration(

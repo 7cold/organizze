@@ -38,6 +38,12 @@ class Controller extends GetxController {
   var outroP1 = "".obs;
   var outroP2 = "".obs;
 
+  RxInt messaldo0 = 0.obs;
+  RxInt messaldo1 = 0.obs;
+  RxInt messaldo2 = 0.obs;
+  RxInt messaldo3 = 0.obs;
+  RxInt messaldo4 = 0.obs;
+
   RxString popup = "Hoje".obs;
   RxBool loading = false.obs;
   RxBool verSaldo = true.obs;
@@ -112,6 +118,28 @@ class Controller extends GetxController {
       for (Transactions t in transacoes) {
         if (t.accountId == 4741628) {
           saldoSecundario.value += t.amountCents;
+        }
+      }
+
+      //saldos
+      for (Transactions t in transacoes) {
+        DateTime dt = DateTime.parse(t.date);
+
+        if (dt.month == DateTime.now().month && t.accountId == 4741627) {
+          messaldo0.value += t.amountCents;
+        } else if (dt.month == DateTime.now().month - 1 &&
+            t.accountId == 4741627) {
+          messaldo1.value += t.amountCents;
+        } else if (dt.month == DateTime.now().month - 2 &&
+            t.accountId == 4741627) {
+          messaldo2.value += t.amountCents;
+        } else if (dt.month == DateTime.now().month - 3 &&
+            t.accountId == 4741627) {
+          messaldo3.value += t.amountCents;
+        } else {
+          if (dt.month == DateTime.now().month - 4 && t.accountId == 4741627) {
+            messaldo4.value += t.amountCents;
+          }
         }
       }
     } else {
