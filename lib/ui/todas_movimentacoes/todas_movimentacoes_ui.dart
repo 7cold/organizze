@@ -164,30 +164,34 @@ class TodasMovimentacoesUi extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   color: CupertinoColors.white,
                 ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 20),
-                      c.transacoesFiltro.length == 0
-                          ? Container(
-                              width: context.width,
-                              height: context.height / 1.5,
-                              child: Center(
-                                child: Text(
-                                  "nenhuma transação para esse período 😀",
-                                  style: fthin22,
+                child: Scrollbar(
+                  interactive: true,
+                  isAlwaysShown: true,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(height: 20),
+                        c.transacoesFiltro.length == 0
+                            ? Container(
+                                width: context.width,
+                                height: context.height / 1.5,
+                                child: Center(
+                                  child: Text(
+                                    "nenhuma transação para esse período 😀",
+                                    style: fthin22,
+                                  ),
                                 ),
+                              )
+                            : Column(
+                                children: c.transacoesFiltro.map((data) {
+                                  Transactions transactions = data;
+                                  return item(
+                                    transactions,
+                                  );
+                                }).toList(),
                               ),
-                            )
-                          : Column(
-                              children: c.transacoesFiltro.map((data) {
-                                Transactions transactions = data;
-                                return item(
-                                  transactions,
-                                );
-                              }).toList(),
-                            ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

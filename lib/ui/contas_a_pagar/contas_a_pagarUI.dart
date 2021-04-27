@@ -78,7 +78,7 @@ class ContasaPagarUi extends StatelessWidget {
                         : Padding(
                             padding: EdgeInsets.only(top: 15),
                             child: Material(
-                              elevation: 2.5,
+                              elevation: 1,
                               color: CupertinoColors.white,
                               shadowColor: CupertinoColors.systemFill,
                               borderRadius: BorderRadius.circular(8),
@@ -115,32 +115,36 @@ class ContasaPagarUi extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   color: CupertinoColors.white,
                 ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 20),
-                      cp.contasapagar.length == 0
-                          ? Container(
-                              width: context.width,
-                              height: context.height / 1.5,
-                              child: Center(
-                                child: Text(
-                                  "nenhuma conta para pagar para esse período 😀",
-                                  style: fthin22,
+                child: Scrollbar(
+                  interactive: true,
+                  isAlwaysShown: true,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(height: 20),
+                        cp.contasapagar.length == 0
+                            ? Container(
+                                width: context.width,
+                                height: context.height / 1.5,
+                                child: Center(
+                                  child: Text(
+                                    "nenhuma conta para pagar para esse período 😀",
+                                    style: fthin22,
+                                  ),
                                 ),
+                              )
+                            : Column(
+                                children: cp.contasapagar.map((data) {
+                                  Transactions transactions = data;
+                                  return transactions.paid == true
+                                      ? SizedBox()
+                                      : item(
+                                          transactions,
+                                        );
+                                }).toList(),
                               ),
-                            )
-                          : Column(
-                              children: cp.contasapagar.map((data) {
-                                Transactions transactions = data;
-                                return transactions.paid == true
-                                    ? SizedBox()
-                                    : item(
-                                        transactions,
-                                      );
-                              }).toList(),
-                            ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

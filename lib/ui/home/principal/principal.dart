@@ -77,9 +77,12 @@ class Principal extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Flexible(
-                                  child: Text(
-                                    "Consultar todas as movimentações",
-                                    style: fbold18,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      "Consultar todas as movimentações",
+                                      style: fbold18,
+                                    ),
                                   ),
                                 ),
                                 Padding(
@@ -118,9 +121,12 @@ class Principal extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Flexible(
-                                  child: Text(
-                                    "Contas a Pagar",
-                                    style: fbold18,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      "Contas a Pagar",
+                                      style: fbold18,
+                                    ),
                                   ),
                                 ),
                                 Padding(
@@ -175,9 +181,12 @@ class _Item extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  accouts.name,
-                  style: fbold24,
+                Padding(
+                  padding: EdgeInsets.only(left: 5),
+                  child: Text(
+                    accouts.name,
+                    style: fbold24,
+                  ),
                 ),
                 Text(
                   accouts.defaultAccount == true ? "Principal" : "Secundaria",
@@ -275,11 +284,14 @@ class _Chart extends StatelessWidget {
     return Stack(
       children: [
         Padding(
-          padding: EdgeInsets.only(top: 20),
+          padding: EdgeInsets.only(
+            top: 20,
+            left: 10,
+          ),
           child: Text("Saldo entre entradas e saídas", style: fbold18),
         ),
         Container(
-          margin: EdgeInsets.only(left: 10, top: 70),
+          margin: EdgeInsets.only(left: 10, top: 70, right: 5),
           child: LineChart(
             LineChartData(
               minX: 0,

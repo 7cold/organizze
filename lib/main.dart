@@ -20,6 +20,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Layout(
       child: GetMaterialApp(
+        checkerboardOffscreenLayers: true,
+        //debugShowMaterialGrid: true,
+        //showPerformanceOverlay: true,
+        //showSemanticsDebugger: true,
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
