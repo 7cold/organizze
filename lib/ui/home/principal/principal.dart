@@ -50,7 +50,7 @@ class Principal extends StatelessWidget {
                       ResponsiveGridCol(
                         child: ResponsiveGridRow(
                           children: c.contas.take(2).map((e) {
-                            Accouts accouts = e;
+                            Accouts accouts = Accouts.fromJson(e);
                             return ResponsiveGridCol(
                                 md: context.breakpoint == LayoutBreakpoint.md
                                     ? 6

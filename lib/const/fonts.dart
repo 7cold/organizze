@@ -24,6 +24,12 @@ TextStyle fbold18 = TextStyle(
   fontSize: 18,
 );
 
+TextStyle fbold18w = TextStyle(
+  fontFamily: fontBold,
+  color: CupertinoColors.systemBackground,
+  fontSize: 18,
+);
+
 TextStyle fbold20 = TextStyle(
   fontFamily: fontBold,
   color: CupertinoColors.label,

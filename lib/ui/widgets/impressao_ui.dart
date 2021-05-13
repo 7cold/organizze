@@ -138,7 +138,7 @@ class ImpressaoUi extends StatelessWidget {
                         ),
                         pw.Text(trans.notes,
                             style: pw.TextStyle(
-                                fontSize: 12, color: PdfColors.grey600))
+                                fontSize: 10, color: PdfColors.grey600))
                       ]),
                   pw.Column(children: [
                     pw.Divider(color: PdfColors.grey400),

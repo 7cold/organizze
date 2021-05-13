@@ -28,17 +28,4 @@ class Accouts {
     defaultAccount = json['default'];
     type = json['type'];
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['description'] = this.description;
-    data['archived'] = this.archived;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['default'] = this.defaultAccount;
-    data['type'] = this.type;
-    return data;
-  }
 }

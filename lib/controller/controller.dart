@@ -1,9 +1,9 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:money2/money2.dart';
-import 'package:organizze/data/accounts.dart';
 import 'package:organizze/data/transactions.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -44,6 +44,16 @@ class Controller extends GetxController {
   RxInt messaldo3 = 0.obs;
   RxInt messaldo4 = 0.obs;
 
+  RxString novaMovTipo = "".obs;
+  RxString novaMovCategoriaName = "".obs;
+  RxString novaMovCategoriaId = "".obs;
+  RxString novaMovContaName = "".obs;
+  RxString novaMovContaId = "".obs;
+
+  Rx<Color> movTipoColor = CupertinoColors.darkBackgroundGray.obs;
+  RxInt movTipo1 = 0.obs;
+  RxInt movTipo2 = 0.obs;
+  RxInt movTipo3 = 0.obs;
   RxString popup = "Hoje".obs;
   RxBool loading = false.obs;
   RxBool verSaldo = true.obs;
@@ -63,6 +73,37 @@ class Controller extends GetxController {
   String basicAuth = 'Basic ' +
       base64Encode(utf8.encode(
           'leobragac@gmail.com:583ce7d8327777f4f66b09d3f592e83cf7c2cfaf'));
+
+  void alterarTipoMov(int tipo) {
+    switch (tipo) {
+      case 1:
+        {
+          movTipo1.value = 1;
+          movTipo2.value = 0;
+          movTipo3.value = 0;
+          movTipoColor.value = CupertinoColors.destructiveRed.withAlpha(190);
+        }
+        break;
+      case 2:
+        {
+          movTipo1.value = 0;
+          movTipo2.value = 1;
+          movTipo3.value = 0;
+          movTipoColor.value = CupertinoColors.activeGreen.withAlpha(190);
+        }
+        break;
+      case 3:
+        {
+          movTipo1.value = 0;
+          movTipo2.value = 0;
+          movTipo3.value = 1;
+          movTipoColor.value = CupertinoColors.darkBackgroundGray;
+        }
+        break;
+      default:
+        movTipo1.value = 0;
+    }
+  }
 
   void funcaoVerSaldo() {
     verSaldo.value = !verSaldo.value;
@@ -89,9 +130,11 @@ class Controller extends GetxController {
     );
 
     if (response.statusCode == 200) {
-      Iterable res = json.decode(response.body);
-      List list = res.map((e) => Accouts.fromJson(e)).toList();
-      contas.addAll(list);
+      // Iterable res = json.decode(response.body);
+      // List list = res.map((e) => Accouts.fromJson(e)).toList();
+      // contas.addAll(list);
+      contas.addAll(jsonDecode(response.body));
+      return jsonDecode(response.body);
     } else {
       throw Exception('Falha ao carregar...');
     }
@@ -164,5 +207,17 @@ class Controller extends GetxController {
     } else {
       throw Exception('Falha ao carregar...');
     }
+  }
+
+  Future criarMovimentacao(Map novaMov) async {
+    loading.value = true;
+    var response = await http.post(
+        Uri.parse('https://api.organizze.com.br/rest/v2/transactions'),
+        headers: {'authorization': basicAuth},
+        body: novaMov);
+
+    print(response.body);
+
+    loading.value = false;
   }
 }
