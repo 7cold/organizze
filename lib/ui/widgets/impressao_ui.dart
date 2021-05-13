@@ -40,7 +40,7 @@ class ImpressaoUi extends StatelessWidget {
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: <pw.Widget>[
                 pw.Text('Relatório Movimentações', textScaleFactor: 1.5),
-                pw.Text(c.popup.toString(),
+                pw.Text(c.filtroLabel.toString(),
                     textScaleFactor: 1,
                     style: pw.TextStyle(color: PdfColors.grey700)),
               ],

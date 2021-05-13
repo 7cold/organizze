@@ -47,7 +47,7 @@ class TodasMovimentacoesUi extends StatelessWidget {
                         child: c.loading.value == true
                             ? CupertinoActivityIndicator()
                             : Text(
-                                c.popup.value,
+                                c.filtroLabel.value,
                                 style: TextStyle(fontFamily: fontThin),
                               ),
                         onPressed: () {
@@ -61,7 +61,7 @@ class TodasMovimentacoesUi extends StatelessWidget {
                                   child: Text('Hoje'),
                                   onPressed: () {
                                     c.loading.value = true;
-                                    c.popup.value = "Hoje";
+                                    c.filtroLabel.value = "Hoje";
                                     c.carregarTransacoesFiltro(
                                         c.dateNowName, c.dateNowName);
                                     Navigator.pop(context);
@@ -71,7 +71,7 @@ class TodasMovimentacoesUi extends StatelessWidget {
                                   child: Text('Tudo'),
                                   onPressed: () {
                                     c.loading.value = true;
-                                    c.popup.value = "Tudo";
+                                    c.filtroLabel.value = "Tudo";
                                     c.carregarTransacoesFiltro(
                                         '2020-01-01', c.dateNowName);
                                     Navigator.pop(context);
@@ -81,7 +81,7 @@ class TodasMovimentacoesUi extends StatelessWidget {
                                   child: Text(c.mesAtual),
                                   onPressed: () {
                                     c.loading.value = true;
-                                    c.popup.value = c.mesAtual;
+                                    c.filtroLabel.value = c.mesAtual;
                                     c.carregarTransacoesFiltro(
                                         c.anoAtualInt +
                                             '-' +
@@ -99,7 +99,7 @@ class TodasMovimentacoesUi extends StatelessWidget {
                                   child: Text(c.mesAnterior),
                                   onPressed: () {
                                     c.loading.value = true;
-                                    c.popup.value = c.mesAnterior;
+                                    c.filtroLabel.value = c.mesAnterior;
                                     c.carregarTransacoesFiltro(
                                         c.anoAnteriorInt +
                                             '-' +
@@ -117,7 +117,7 @@ class TodasMovimentacoesUi extends StatelessWidget {
                                   child: Text("Outro período"),
                                   onPressed: () async {
                                     c.loading.value = true;
-                                    c.popup.value = "Outro período";
+                                    c.filtroLabel.value = "Outro período";
 
                                     final List<DateTime> picked =
                                         await DateRangePicker.showDatePicker(
@@ -130,20 +130,23 @@ class TodasMovimentacoesUi extends StatelessWidget {
                                           DateTime(DateTime.now().year + 2),
                                     );
                                     if (picked != null && picked.length == 2) {
-                                      c.outroP1.value = DateFormat('yyyy-MM-dd')
-                                          .format(DateFormat('yyyy-MM-dd')
-                                              .parse(picked
-                                                  .elementAt(0)
-                                                  .toString()));
+                                      c.filtroPeriodo1.value =
+                                          DateFormat('yyyy-MM-dd').format(
+                                              DateFormat('yyyy-MM-dd').parse(
+                                                  picked
+                                                      .elementAt(0)
+                                                      .toString()));
 
-                                      c.outroP2.value = DateFormat('yyyy-MM-dd')
-                                          .format(DateFormat('yyyy-MM-dd')
-                                              .parse(picked
-                                                  .elementAt(1)
-                                                  .toString()));
+                                      c.filtroPeriodo2.value =
+                                          DateFormat('yyyy-MM-dd').format(
+                                              DateFormat('yyyy-MM-dd').parse(
+                                                  picked
+                                                      .elementAt(1)
+                                                      .toString()));
                                     }
                                     c.carregarTransacoesFiltro(
-                                        c.outroP1.value, c.outroP2.value);
+                                        c.filtroPeriodo1.value,
+                                        c.filtroPeriodo2.value);
 
                                     Navigator.pop(context);
                                   },

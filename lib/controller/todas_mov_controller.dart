@@ -19,6 +19,6 @@ class TodasMovController extends GetxController {
   void onClose() {
     super.onClose();
     c.transacoesFiltro.clear();
-    c.popup.value = "Hoje";
+    c.filtroLabel.value = "Hoje";
   }
 }

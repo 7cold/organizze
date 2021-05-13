@@ -78,8 +78,8 @@ class Movimentacoes extends StatelessWidget {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             6),
-                                                    color:
-                                                        c.movTipoColor.value),
+                                                    color: c.novaMovTipoColor
+                                                        .value),
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.center,
@@ -135,7 +135,6 @@ class Movimentacoes extends StatelessWidget {
                             child: Column(
                               children: c.transacoes.take(5).map((data) {
                                 Transactions transactions = data;
-
                                 return _Item(transactions: transactions);
                               }).toList(),
                             ),
@@ -493,7 +492,8 @@ class _TipoMovimentacao extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.only(
                         left: 20, top: 10, right: 20, bottom: 10),
-                    child: CupertinoButton.filled(
+                    child: CupertinoButton(
+                        color: CupertinoColors.activeGreen,
                         padding: EdgeInsets.all(0),
                         child: Text("Salvar"),
                         onPressed: () {
@@ -512,6 +512,8 @@ class _TipoMovimentacao extends StatelessWidget {
                             "category_id": c.novaMovCategoriaId.value,
                             "notes": novaNotaC.text,
                           });
+                          c.carregarTudo();
+                          Get.back();
                         }),
                   )),
             ]),

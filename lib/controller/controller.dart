@@ -11,11 +11,43 @@ class Controller extends GetxController {
   @override
   onInit() async {
     initializeDateFormatting();
+    carregarTudo();
+    super.onInit();
+  }
+
+  carregarTudo() async {
+    limpartudo();
     await _categorias().whenComplete(() async {
       await _carregarTransacoes();
       await _carregarContas();
     });
-    super.onInit();
+  }
+
+  limpartudo() {
+    filtroPeriodo1 = "".obs;
+    filtroPeriodo2 = "".obs;
+    messaldo0 = 0.obs;
+    messaldo1 = 0.obs;
+    messaldo2 = 0.obs;
+    messaldo3 = 0.obs;
+    messaldo4 = 0.obs;
+    novaMovCategoriaName = "".obs;
+    novaMovCategoriaId = "".obs;
+    novaMovContaName = "".obs;
+    novaMovContaId = "".obs;
+    movTipo1 = 0.obs;
+    movTipo2 = 0.obs;
+    movTipo3 = 0.obs;
+    filtroLabel = "Hoje".obs;
+    loading = false.obs;
+    verSaldo = true.obs;
+    categories = [].obs;
+    transacoes.clear();
+    transacoesFiltro = [].obs;
+    contas = [].obs;
+    saldoPrincipal = 0.obs;
+    saldoSecundario = 0.obs;
+    dateNowName = DateFormat('yyyy-MM-dd').format(DateTime.now());
   }
 
   var mesAtual = DateFormat.MMMM('pt').format(DateTime.now()).capitalizeFirst;
@@ -35,8 +67,10 @@ class Controller extends GetxController {
       .day
       .toString();
 
-  var outroP1 = "".obs;
-  var outroP2 = "".obs;
+  RxBool loading = false.obs;
+
+  RxString filtroPeriodo1 = "".obs;
+  RxString filtroPeriodo2 = "".obs;
 
   RxInt messaldo0 = 0.obs;
   RxInt messaldo1 = 0.obs;
@@ -44,18 +78,16 @@ class Controller extends GetxController {
   RxInt messaldo3 = 0.obs;
   RxInt messaldo4 = 0.obs;
 
-  RxString novaMovTipo = "".obs;
   RxString novaMovCategoriaName = "".obs;
   RxString novaMovCategoriaId = "".obs;
   RxString novaMovContaName = "".obs;
   RxString novaMovContaId = "".obs;
-
-  Rx<Color> movTipoColor = CupertinoColors.darkBackgroundGray.obs;
+  Rx<Color> novaMovTipoColor = CupertinoColors.darkBackgroundGray.obs;
   RxInt movTipo1 = 0.obs;
   RxInt movTipo2 = 0.obs;
   RxInt movTipo3 = 0.obs;
-  RxString popup = "Hoje".obs;
-  RxBool loading = false.obs;
+
+  RxString filtroLabel = "Hoje".obs;
   RxBool verSaldo = true.obs;
   RxList categories = [].obs;
   RxList transacoes = [].obs;
@@ -81,7 +113,8 @@ class Controller extends GetxController {
           movTipo1.value = 1;
           movTipo2.value = 0;
           movTipo3.value = 0;
-          movTipoColor.value = CupertinoColors.destructiveRed.withAlpha(190);
+          novaMovTipoColor.value =
+              CupertinoColors.destructiveRed.withAlpha(190);
         }
         break;
       case 2:
@@ -89,7 +122,7 @@ class Controller extends GetxController {
           movTipo1.value = 0;
           movTipo2.value = 1;
           movTipo3.value = 0;
-          movTipoColor.value = CupertinoColors.activeGreen.withAlpha(190);
+          novaMovTipoColor.value = CupertinoColors.activeGreen.withAlpha(190);
         }
         break;
       case 3:
@@ -97,7 +130,7 @@ class Controller extends GetxController {
           movTipo1.value = 0;
           movTipo2.value = 0;
           movTipo3.value = 1;
-          movTipoColor.value = CupertinoColors.darkBackgroundGray;
+          novaMovTipoColor.value = CupertinoColors.darkBackgroundGray;
         }
         break;
       default:
@@ -124,6 +157,7 @@ class Controller extends GetxController {
   }
 
   Future _carregarContas() async {
+    loading.value = true;
     final response = await http.get(
       Uri.parse('https://api.organizze.com.br/rest/v2/accounts'),
       headers: {'authorization': basicAuth},
@@ -134,8 +168,10 @@ class Controller extends GetxController {
       // List list = res.map((e) => Accouts.fromJson(e)).toList();
       // contas.addAll(list);
       contas.addAll(jsonDecode(response.body));
+      loading.value = false;
       return jsonDecode(response.body);
     } else {
+      loading.value = false;
       throw Exception('Falha ao carregar...');
     }
   }
@@ -146,6 +182,7 @@ class Controller extends GetxController {
           'https://api.organizze.com.br/rest/v2/transactions?start_date=2015-01-01&end_date=$dateNowName'),
       headers: {'authorization': basicAuth},
     );
+    loading.value = true;
 
     if (response.statusCode == 200) {
       Iterable res = json.decode(response.body);
@@ -185,6 +222,7 @@ class Controller extends GetxController {
           }
         }
       }
+      loading.value = false;
     } else {
       throw Exception('Falha ao carregar...');
     }
