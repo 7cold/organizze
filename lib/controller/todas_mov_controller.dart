@@ -7,6 +7,7 @@ class TodasMovController extends GetxController {
   @override
   onInit() {
     super.onInit();
+    print("object");
   }
 
   @override
@@ -20,5 +21,6 @@ class TodasMovController extends GetxController {
     super.onClose();
     c.transacoesFiltro.clear();
     c.filtroLabel.value = "Hoje";
+    print("object");
   }
 }

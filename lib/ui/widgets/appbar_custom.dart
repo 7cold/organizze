@@ -8,6 +8,7 @@ final Controller c = Get.put(Controller());
 
 appBarCustom(String label, Function func) {
   return AppBar(
+    centerTitle: true,
     actions: [
       func == null
           ? SizedBox()

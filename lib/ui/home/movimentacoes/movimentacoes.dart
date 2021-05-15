@@ -13,7 +13,7 @@ import 'package:organizze/data/transactions.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 
 final Controller c = Get.put(Controller());
-var novoValorC = MoneyMaskedTextController();
+
 var novaMovDtC = MaskedTextController(mask: "00/00/0000");
 var novaMovDtC2 = TextEditingController();
 var novaDescC = TextEditingController();
@@ -65,7 +65,7 @@ class Movimentacoes extends StatelessWidget {
                                               BorderRadius.circular(10),
                                           color: Colors.white,
                                         ),
-                                        height: 540,
+                                        height: 500,
                                         width: 380,
                                         child: Flex(
                                           direction: Axis.vertical,
@@ -95,7 +95,7 @@ class Movimentacoes extends StatelessWidget {
                                               ),
                                             ),
                                             Flexible(
-                                              flex: 3,
+                                              flex: 5,
                                               child: Container(
                                                   width: Get.width,
                                                   decoration: BoxDecoration(
@@ -117,7 +117,7 @@ class Movimentacoes extends StatelessWidget {
                                     ),
                                   ),
                                 ).then((value) {
-                                  novoValorC.text = "0,00";
+                                  c.novoValorC.value.text = "0,00";
                                   novaMovDtC.text = "";
                                   novaMovDtC2.text = "";
                                   novaDescC.text = "";
@@ -355,7 +355,7 @@ class _TipoMovimentacao extends StatelessWidget {
                       suffix: IconButton(
                         icon: Icon(Icons.clear_sharp, size: 15),
                         onPressed: () {
-                          novoValorC.text = "0,00";
+                          c.novoValorC.value.text = "0,00";
                         },
                       ),
                       style: fthin16,
@@ -365,7 +365,10 @@ class _TipoMovimentacao extends StatelessWidget {
                         padding: EdgeInsets.only(left: 5),
                         child: Text("R\$"),
                       ),
-                      controller: novoValorC,
+                      controller: c.novoValorC.value,
+                      onChanged: (_) {
+                        c.novoValorC.value.text = _;
+                      },
                     ),
                   )),
               ResponsiveGridCol(
@@ -418,7 +421,10 @@ class _TipoMovimentacao extends StatelessWidget {
                       child: DropdownButton(
                         style: fthin16,
                         hint: Container(
-                            width: 110, child: Text(c.novaMovContaName.value)),
+                            width: 110,
+                            child: Text(c.novaMovContaName.value == ""
+                                ? "Conta"
+                                : c.novaMovContaName.value)),
                         items: c.contas.map((element) {
                           return DropdownMenuItem(
                             value: element,
@@ -453,7 +459,9 @@ class _TipoMovimentacao extends StatelessWidget {
                           style: fthin16,
                           hint: Container(
                               width: 110,
-                              child: Text(c.novaMovCategoriaName.value)),
+                              child: Text(c.novaMovCategoriaName.value == ""
+                                  ? "Categoria"
+                                  : c.novaMovCategoriaName.value)),
                           items: c.categories.map((element) {
                             return DropdownMenuItem(
                               value: element,
@@ -488,34 +496,66 @@ class _TipoMovimentacao extends StatelessWidget {
             ResponsiveGridRow(children: [
 //____________________BOTAO SALVAR__________________________
               ResponsiveGridCol(
-                  lg: 12,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        left: 20, top: 10, right: 20, bottom: 10),
-                    child: CupertinoButton(
-                        color: CupertinoColors.activeGreen,
-                        padding: EdgeInsets.all(0),
-                        child: Text("Salvar"),
-                        onPressed: () {
-                          c.criarMovimentacao({
-                            "description": novaDescC.text,
-                            "date": novaMovDtC2.text,
-                            "amount_cents": c.movTipo1.value == 1
-                                ? ("-" +
-                                    novoValorC.text
+                lg: 6,
+                child: Padding(
+                  padding:
+                      EdgeInsets.only(left: 20, top: 10, right: 10, bottom: 10),
+                  child: CupertinoButton(
+                      color: CupertinoColors.activeGreen,
+                      padding: EdgeInsets.all(0),
+                      child: Text("Salvar"),
+                      onPressed: c.movTipo1.value == 0 &&
+                                  c.movTipo2.value == 0 &&
+                                  c.movTipo3.value == 0 ||
+                              c.novoValorC.value.text == "0,00" ||
+                              c.novaMovCategoriaName.value == "" ||
+                              c.novaMovContaName.value == "" ||
+                              novaMovDtC2.text == "" ||
+                              novaMovDtC2.text == null
+                          ? null
+                          : () {
+                              c.criarMovimentacao({
+                                "description": novaDescC.text,
+                                "date": novaMovDtC2.text,
+                                "amount_cents": c.movTipo1.value == 1
+                                    ? ("-" +
+                                        c.novoValorC.value.text
+                                            .replaceAll(",", "")
+                                            .replaceAll(".", ""))
+                                    : c.novoValorC.value.text
                                         .replaceAll(",", "")
-                                        .replaceAll(".", ""))
-                                : novoValorC.text
-                                    .replaceAll(",", "")
-                                    .replaceAll(".", ""),
-                            "account_id": c.novaMovContaId.value,
-                            "category_id": c.novaMovCategoriaId.value,
-                            "notes": novaNotaC.text,
-                          });
-                          c.carregarTudo();
-                          Get.back();
-                        }),
-                  )),
+                                        .replaceAll(".", ""),
+                                "account_id": c.novaMovContaId.value,
+                                "category_id": c.novaMovCategoriaId.value,
+                                "notes": novaNotaC.text,
+                              });
+                              c.carregarTudo();
+                              Get.back();
+                            }),
+                ),
+              ),
+              ResponsiveGridCol(
+                lg: 6,
+                child: Padding(
+                  padding:
+                      EdgeInsets.only(left: 10, top: 10, right: 20, bottom: 10),
+                  child: CupertinoButton(
+                      color: CupertinoColors.systemGrey,
+                      padding: EdgeInsets.all(0),
+                      child: Text("Voltar"),
+                      onPressed: () {
+                        c.novoValorC.value.text = "0,00";
+                        novaMovDtC.text = "";
+                        novaMovDtC2.text = "";
+                        novaDescC.text = "";
+                        novaNotaC.text = "";
+                        c.novaMovContaName.value = "";
+                        c.novaMovCategoriaName.value = "";
+
+                        Get.back();
+                      }),
+                ),
+              ),
             ]),
           ],
         ),

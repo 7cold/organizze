@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -16,38 +17,13 @@ class Controller extends GetxController {
   }
 
   carregarTudo() async {
+    loading.value = true;
     limpartudo();
     await _categorias().whenComplete(() async {
       await _carregarTransacoes();
       await _carregarContas();
     });
-  }
-
-  limpartudo() {
-    filtroPeriodo1 = "".obs;
-    filtroPeriodo2 = "".obs;
-    messaldo0 = 0.obs;
-    messaldo1 = 0.obs;
-    messaldo2 = 0.obs;
-    messaldo3 = 0.obs;
-    messaldo4 = 0.obs;
-    novaMovCategoriaName = "".obs;
-    novaMovCategoriaId = "".obs;
-    novaMovContaName = "".obs;
-    novaMovContaId = "".obs;
-    movTipo1 = 0.obs;
-    movTipo2 = 0.obs;
-    movTipo3 = 0.obs;
-    filtroLabel = "Hoje".obs;
-    loading = false.obs;
-    verSaldo = true.obs;
-    categories = [].obs;
-    transacoes.clear();
-    transacoesFiltro = [].obs;
-    contas = [].obs;
-    saldoPrincipal = 0.obs;
-    saldoSecundario = 0.obs;
-    dateNowName = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    loading.value = false;
   }
 
   var mesAtual = DateFormat.MMMM('pt').format(DateTime.now()).capitalizeFirst;
@@ -83,15 +59,19 @@ class Controller extends GetxController {
   RxString novaMovContaName = "".obs;
   RxString novaMovContaId = "".obs;
   Rx<Color> novaMovTipoColor = CupertinoColors.darkBackgroundGray.obs;
-  RxInt movTipo1 = 0.obs;
+  RxInt movTipo1 = 1.obs;
   RxInt movTipo2 = 0.obs;
   RxInt movTipo3 = 0.obs;
+  Rx novoValorC = MoneyMaskedTextController().obs;
 
   RxString filtroLabel = "Hoje".obs;
-  RxBool verSaldo = true.obs;
+  RxBool verSaldo = false.obs;
   RxList categories = [].obs;
   RxList transacoes = [].obs;
   RxList transacoesFiltro = [].obs;
+  RxInt despesasFiltro = 0.obs;
+  RxInt receitasFiltro = 0.obs;
+  RxInt totalFiltro = 0.obs;
   RxList contas = [].obs;
   RxInt saldoPrincipal = 0.obs;
   RxInt saldoSecundario = 0.obs;
@@ -230,6 +210,10 @@ class Controller extends GetxController {
 
   Future carregarTransacoesFiltro(String dataInicio, String dataFim) async {
     loading.value = true;
+    despesasFiltro.value = 0;
+    receitasFiltro.value = 0;
+    transacoesFiltro.clear();
+
     final response = await http.get(
       Uri.parse(
           'https://api.organizze.com.br/rest/v2/transactions?start_date=$dataInicio&end_date=$dataFim'),
@@ -237,10 +221,22 @@ class Controller extends GetxController {
     );
 
     if (response.statusCode == 200) {
-      transacoesFiltro.clear();
       Iterable res = json.decode(response.body);
       List list = res.map((e) => Transactions.fromJson(e)).toList();
+
       transacoesFiltro.addAll(list);
+
+      transacoesFiltro.forEach((res) {
+        Transactions trans = res;
+        if (trans.amountCents.isNegative == true) {
+          despesasFiltro.value += trans.amountCents;
+        } else {
+          receitasFiltro.value += trans.amountCents;
+        }
+      });
+
+      totalFiltro.value = (receitasFiltro.value + despesasFiltro.value);
+
       loading.value = false;
     } else {
       throw Exception('Falha ao carregar...');
@@ -253,9 +249,46 @@ class Controller extends GetxController {
         Uri.parse('https://api.organizze.com.br/rest/v2/transactions'),
         headers: {'authorization': basicAuth},
         body: novaMov);
-
     print(response.body);
-
     loading.value = false;
+  }
+
+  Future excluirMovimentacao(int id) async {
+    loading.value = true;
+    var response = await http.delete(
+        Uri.parse('https://api.organizze.com.br/rest/v2/transactions/$id'),
+        headers: {'authorization': basicAuth},
+        body: {});
+    print(response.body);
+    carregarTransacoesFiltro(dateNowName, dateNowName);
+    carregarTudo();
+    loading.value = false;
+  }
+
+  limpartudo() {
+    filtroPeriodo1 = "".obs;
+    filtroPeriodo2 = "".obs;
+    messaldo0 = 0.obs;
+    messaldo1 = 0.obs;
+    messaldo2 = 0.obs;
+    messaldo3 = 0.obs;
+    messaldo4 = 0.obs;
+    novaMovCategoriaName = "".obs;
+    novaMovCategoriaId = "".obs;
+    novaMovContaName = "".obs;
+    novaMovContaId = "".obs;
+    movTipo1 = 0.obs;
+    movTipo2 = 0.obs;
+    movTipo3 = 0.obs;
+    filtroLabel = "Hoje".obs;
+    loading = false.obs;
+    verSaldo = true.obs;
+    categories = [].obs;
+    transacoes.clear();
+    transacoesFiltro = [].obs;
+    contas = [].obs;
+    saldoPrincipal = 0.obs;
+    saldoSecundario = 0.obs;
+    dateNowName = DateFormat('yyyy-MM-dd').format(DateTime.now());
   }
 }
