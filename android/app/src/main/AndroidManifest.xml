@@ -2,7 +2,7 @@
     package="com.cold.organizze">
    <application
         android:label="organizze"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

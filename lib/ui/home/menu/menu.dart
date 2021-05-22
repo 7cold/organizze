@@ -2,15 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:organizze/const/fonts.dart';
-import 'package:organizze/controller/controller_system.dart';
+import 'package:organizze/controller/controller.dart';
 import 'package:organizze/ui/contas_a_pagar/contas_a_pagarUI.dart';
 import 'package:organizze/ui/todas_movimentacoes/todas_movimentacoes_ui.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 
-final ControllerSystem c = Get.put(ControllerSystem());
 Color cor = CupertinoColors.systemGroupedBackground;
 
+// ignore: must_be_immutable
 class Menu extends StatelessWidget {
+  final Controller c = Get.put(Controller());
   @override
   Widget build(BuildContext context) {
     return Flexible(
@@ -41,6 +42,22 @@ class Menu extends StatelessWidget {
                 page: TodasMovimentacoesUi(),
               ),
             ),
+            ResponsiveGridCol(
+                md: 12,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 15),
+                  child: CupertinoButton(
+                      color: CupertinoColors.activeGreen,
+                      child: c.loading.value == true
+                          ? CupertinoActivityIndicator()
+                          : Text(
+                              "Consultar",
+                              style: TextStyle(fontFamily: fontThin),
+                            ),
+                      onPressed: () {
+                        Get.to(() => TodasMovimentacoesUi());
+                      }),
+                )),
             ResponsiveGridCol(
               md: 12,
               child: _Item(
@@ -96,7 +113,9 @@ class __ItemState extends State<_Item> {
           changeColor(false);
         },
         child: InkWell(
-          onTap: () => Get.to(() => widget.page),
+          onTap: () {
+            Get.to(() => widget.page);
+          },
           child: AnimatedContainer(
             duration: Duration(milliseconds: 100),
             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
