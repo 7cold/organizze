@@ -30,53 +30,61 @@ class ContasaPagarUi extends StatelessWidget {
                 alignment: Alignment.topCenter,
                 child: Column(
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Período de referência:    ",
-                          style: fbold20,
-                        ),
-                        CupertinoButton(
-                          color: CupertinoColors.activeGreen,
-                          child: c.loading.value == true
-                              ? CupertinoActivityIndicator()
-                              : Text(
-                                  "Selecione",
-                                  style: TextStyle(fontFamily: fontThin),
-                                ),
-                          onPressed: () async {
-                            c.loading.value = true;
+                    Container(
+                      height: 60,
+                      width: 380,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Período de referência:    ",
+                            style: fbold16,
+                          ),
+                          SizedBox(
+                            height: 30,
+                            child: CupertinoButton(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              color: CupertinoColors.activeGreen,
+                              child: c.loading.value == true
+                                  ? CupertinoActivityIndicator()
+                                  : Text(
+                                      "Selecione",
+                                      style: TextStyle(fontFamily: fontThin),
+                                    ),
+                              onPressed: () async {
+                                c.loading.value = true;
 
-                            final List<DateTime> picked =
-                                await DateRangePicker.showDatePicker(
-                              context: context,
-                              initialFirstDate: DateTime.now(),
-                              initialLastDate:
-                                  DateTime.now().add(Duration(days: 7)),
-                              firstDate: DateTime(2015),
-                              lastDate: DateTime(DateTime.now().year + 2),
-                            );
-                            if (picked != null && picked.length == 2) {
-                              cp.outroP1.value = DateFormat('yyyy-MM-dd')
-                                  .format(DateFormat('yyyy-MM-dd')
-                                      .parse(picked.elementAt(0).toString()));
+                                final List<DateTime> picked =
+                                    await DateRangePicker.showDatePicker(
+                                  context: context,
+                                  initialFirstDate: DateTime.now(),
+                                  initialLastDate:
+                                      DateTime.now().add(Duration(days: 7)),
+                                  firstDate: DateTime(2015),
+                                  lastDate: DateTime(DateTime.now().year + 2),
+                                );
+                                if (picked != null && picked.length == 2) {
+                                  cp.outroP1.value = DateFormat('yyyy-MM-dd')
+                                      .format(DateFormat('yyyy-MM-dd').parse(
+                                          picked.elementAt(0).toString()));
 
-                              cp.outroP2.value = DateFormat('yyyy-MM-dd')
-                                  .format(DateFormat('yyyy-MM-dd')
-                                      .parse(picked.elementAt(1).toString()));
-                            }
-                            cp.carregarContasaPagar(
-                                cp.outroP1.value, cp.outroP2.value);
-                          },
-                        ),
-                      ],
+                                  cp.outroP2.value = DateFormat('yyyy-MM-dd')
+                                      .format(DateFormat('yyyy-MM-dd').parse(
+                                          picked.elementAt(1).toString()));
+                                }
+                                cp.carregarContasaPagar(
+                                    cp.outroP1.value, cp.outroP2.value);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     cp.outroP1.toString() == '1990-01-01'
                         ? SizedBox()
                         : Padding(
-                            padding: EdgeInsets.only(top: 15),
+                            padding: EdgeInsets.only(top: 0),
                             child: Material(
                               elevation: 1,
                               color: CupertinoColors.white,
@@ -104,6 +112,60 @@ class ContasaPagarUi extends StatelessWidget {
                             ),
                           )
                   ],
+                ),
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: Container(
+                  padding: EdgeInsets.only(
+                    right: 30,
+                    top: 20,
+                  ),
+                  height: 60,
+                  width: 380,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 2),
+                          Row(
+                            children: [
+                              Text(
+                                "Despesas: ",
+                                style: fbold14,
+                              ),
+                              Text(
+                                Money.fromInt(c.despesasFiltro.value, c.real)
+                                    .toString(),
+                                style: fthin16r,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10, bottom: 10),
+                        child: VerticalDivider(),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Total: ",
+                            style: fbold18,
+                          ),
+                          Text(
+                            Money.fromInt(c.totalFiltro.value, c.real)
+                                .toString(),
+                            style: fthin16,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
               Container(

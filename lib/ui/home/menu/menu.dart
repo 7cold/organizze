@@ -78,13 +78,16 @@ class __ItemState extends State<_Item> {
         });
         break;
       default:
+        setState(() {
+          cor = CupertinoColors.systemGroupedBackground;
+        });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 20, right: 20, top: 10),
+      padding: EdgeInsets.only(left: 20, right: 20, top: 15),
       child: MouseRegion(
         onHover: (event) {
           changeColor(true);

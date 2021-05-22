@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:money2/money2.dart';
 import 'package:organizze/const/fonts.dart';
-import 'package:organizze/controller/controller.dart';
 import 'package:organizze/controller/todas_mov_controller.dart';
 import 'package:organizze/data/categories.dart';
 import 'package:organizze/data/transactions.dart';

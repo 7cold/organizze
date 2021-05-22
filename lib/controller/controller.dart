@@ -26,6 +26,15 @@ class Controller extends GetxController {
     loading.value = false;
   }
 
+  @override
+  void onClose() {
+    despesasFiltro.value = 0;
+    receitasFiltro.value = 0;
+    totalFiltro.value = 0;
+    transacoesFiltro.clear();
+    super.onClose();
+  }
+
   var mesAtual = DateFormat.MMMM('pt').format(DateTime.now()).capitalizeFirst;
   var mesAnterior = DateFormat.MMMM('pt')
       .format(DateTime.now().subtract(Duration(days: 30)))
@@ -68,20 +77,21 @@ class Controller extends GetxController {
   RxBool verSaldo = false.obs;
   RxList categories = [].obs;
   RxList transacoes = [].obs;
+
   RxList transacoesFiltro = [].obs;
   RxInt despesasFiltro = 0.obs;
   RxInt receitasFiltro = 0.obs;
   RxInt totalFiltro = 0.obs;
+
   RxList contas = [].obs;
   RxInt saldoPrincipal = 0.obs;
   RxInt saldoSecundario = 0.obs;
-  String dateNowName = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
+  String dateNowName = DateFormat('yyyy-MM-dd').format(DateTime.now());
   NumberFormat numberFormat =
       NumberFormat.currency(locale: 'pt_br', name: 'br');
   final real = Currency.create('EUR', 2,
       symbol: 'R\$', invertSeparators: true, pattern: 'S #.##0,00');
-
   String basicAuth = 'Basic ' +
       base64Encode(utf8.encode(
           'leobragac@gmail.com:583ce7d8327777f4f66b09d3f592e83cf7c2cfaf'));
