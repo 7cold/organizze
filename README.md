@@ -1,17 +1,11 @@
-# organizze
+# Organizze App Desktop - Não Oficial
 
-A new Flutter project.
+Projeto criado com flutter paga gerenciar meus gastos mensais.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+![1](https://user-images.githubusercontent.com/59493948/119230303-fb3e9780-baf1-11eb-86f2-786e29d5b29d.png)
 
-A few resources to get you started if this is your first Flutter project:
+![2](https://user-images.githubusercontent.com/59493948/119230319-0b567700-baf2-11eb-97eb-b737224892eb.png)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+![3](https://user-images.githubusercontent.com/59493948/119230327-13161b80-baf2-11eb-9eb1-684e096b1a7c.png)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# organizze-desktop
